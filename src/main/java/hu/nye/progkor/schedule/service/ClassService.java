@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ClassService {
@@ -23,18 +22,17 @@ public class ClassService {
     }
 
     public Class getClassById(Long id) {
-        Optional<Class> classOptional = classRepository.findById(id);
-        return classOptional.orElse(null);
+        return classRepository.findById(id).orElse(null);
     }
 
-    public Class createClass(Class classObject) {
-        return classRepository.save(classObject);
+    public Class createClass(Class newClass) {
+        return classRepository.save(newClass);
     }
 
-    public Class updateClass(Long id, Class classObject) {
+    public Class updateClass(Long id, Class updatedClass) {
         if (classRepository.existsById(id)) {
-            classObject.setId(id);
-            return classRepository.save(classObject);
+            updatedClass.setId(id);
+            return classRepository.save(updatedClass);
         }
         return null;
     }

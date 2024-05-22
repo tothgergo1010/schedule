@@ -16,15 +16,9 @@ public class Class {
     private String teacherName;
     private String location;
 
-    // Constructors, getters, and setters
+    // Getters and Setters
 
-    public Class() {}
 
-    public Class(String className, String teacherName, String location) {
-        this.className = className;
-        this.teacherName = teacherName;
-        this.location = location;
-    }
 
     public Long getId() {
         return id;

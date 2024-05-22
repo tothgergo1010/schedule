@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <title>Edit Class</title>
 </head>
 <body>
-$END$
+<h1>Edit Class</h1>
+<form th:action="@{/classes/update}" th:object="${class}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    <label>Class Name: <input type="text" th:field="*{className}"/></label><br/>
+    <label>Teacher Name: <input type="text" th:field="*{teacherName}"/></label><br/>
+    <label>Location: <input type="text" th:field="*{location}"/></label><br/>
+    <button type="submit">Save</button>
+</form>
+<a href="/classes">Back to List</a>
 </body>
 </html>

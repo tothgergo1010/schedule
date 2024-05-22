@@ -3,12 +3,14 @@ package hu.nye.progkor.schedule.controller;
 import hu.nye.progkor.schedule.model.Class;
 import hu.nye.progkor.schedule.service.ClassService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/classes")
+@Controller
+@RequestMapping("/classes")
 public class ClassController {
 
     private final ClassService classService;
@@ -19,27 +21,40 @@ public class ClassController {
     }
 
     @GetMapping
-    public List<Class> getAllClasses() {
-        return classService.getAllClasses();
+    public String getAllClasses(Model model) {
+        List<Class> classes = classService.getAllClasses();
+        model.addAttribute("classes", classes);
+        return "index";
     }
 
-    @GetMapping("/{id}")
-    public Class getClassById(@PathVariable Long id) {
-        return classService.getClassById(id);
+    @GetMapping("/new")
+    public String showCreateForm(Model model) {
+        model.addAttribute("class", new Class());
+        return "new-class";
     }
 
     @PostMapping
-    public Class createClass(@RequestBody Class classObject) {
-        return classService.createClass(classObject);
+    public String createClass(@ModelAttribute("class") Class newClass) {
+        classService.createClass(newClass);
+        return "redirect:/classes";
     }
 
-    @PutMapping("/{id}")
-    public Class updateClass(@PathVariable Long id, @RequestBody Class classObject) {
-        return classService.updateClass(id, classObject);
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable("id") Long id, Model model) {
+        Class existingClass = classService.getClassById(id);
+        model.addAttribute("class", existingClass);
+        return "edit-class";
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteClass(@PathVariable Long id) {
+    @PostMapping("/update")
+    public String updateClass(@ModelAttribute("class") Class updatedClass) {
+        classService.updateClass(updatedClass.getId(), updatedClass);
+        return "redirect:/classes";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteClass(@PathVariable("id") Long id) {
         classService.deleteClass(id);
+        return "redirect:/classes";
     }
 }
